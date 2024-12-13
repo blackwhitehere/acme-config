@@ -1,0 +1,14 @@
+site_name: acme-config
+theme:
+  name: material # readthedocs
+nav:
+  - Introduction: index.md
+  - Installation: install.md
+  - Cheat Sheet: cheat_sheet.md
+  - API Reference: api.md
+  - Release Notes: release_notes.md
+extra_css:
+  - stylesheets/extra.css
+
+plugins:
+- mkdocstrings
