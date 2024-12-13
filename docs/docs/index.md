@@ -23,6 +23,6 @@ Requires setup of a default AWS profile e.g. via `aws sso login`. Can be specifi
 
     ac set -app-name acme-config -env dev -ver-number 1 --params-path .env
 
-### To fetch
+## To fetch
 
     ac fetch -app-name acme-config -env dev -ver-number 1
