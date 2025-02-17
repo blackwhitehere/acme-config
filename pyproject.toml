@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "acme_config"
-version = "0.0.3"
+version = "0.0.4"
 description = "System to store application configuration"
 readme = "README.md"
 classifiers = [ "Programming Language :: Python :: 3.12",

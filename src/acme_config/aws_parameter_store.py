@@ -67,7 +67,7 @@ def set_default_version(app_name, env, ver_number):
     ssm = boto3.client("ssm")
     path = f"/{app_name}/{env}/DEFAULT_VERSION"
     ssm.put_parameter(
-        Name=path, Value=ver_number, Type="String", Overwrite=True
+        Name=path, Value=str(ver_number), Type="String", Overwrite=True
     )
 
 def get_default_version(app_name, env):
