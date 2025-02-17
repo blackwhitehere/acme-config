@@ -36,4 +36,6 @@ dev = [
 [tool.setuptools]
 package-dir = {"" = "src"}
 packages = ["acme_config"]
+# https://github.com/astral-sh/uv/issues/9513#issuecomment-2519527822
+license-files = ["LICENSE"]
 # [tool.setuptools.package-data]
