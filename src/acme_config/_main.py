@@ -83,7 +83,8 @@ def parse_args():
         help="Get version",
         description="Get default version number for (app-name, env) combination",
     )
-    add_main_arguments(get_version_parser)
+    get_version_parser.add_argument("-app-name", required=True, type=str, help="Application name")
+    get_version_parser.add_argument("-env", required=True, type=str, help="Environment")
 
     return parser.parse_args()
 
