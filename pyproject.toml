@@ -1,5 +1,5 @@
 [build-system]
-requires = [ "setuptools>=46.4.0", "wheel>=0.36.2"]
+requires = ["setuptools>=68.2.2", "wheel>=0.41.2"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -37,5 +37,5 @@ dev = [
 package-dir = {"" = "src"}
 packages = ["acme_config"]
 # https://github.com/astral-sh/uv/issues/9513#issuecomment-2519527822
-license-files = ["LICENSE"]
+license-files = []
 # [tool.setuptools.package-data]
