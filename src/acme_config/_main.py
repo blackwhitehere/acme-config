@@ -99,13 +99,13 @@ def main_logic(args):
     elif args.command == "set-version":
         set_default_version(args.app_name, args.env, args.ver_number)
         logger.info("Default version set successfully")
-        os.environ[f"ACME_CONFIG_{args.app_name.upper()}_{args.env.upper()}_DEFAULT_VERSION"] = args.version
+        os.environ[f"ACME_CONFIG_{args.app_name.upper()}_{args.env.upper()}_DEFAULT_VERSION"] = str(args.ver_number)
     elif args.command == "get-version":
         version = get_default_version(args.app_name, args.env)
         logger.info(
             f"Default version for `{args.app_name}` in `{args.env}` is `{version}`"
         )
-        os.environ[f"ACME_CONFIG_{args.app_name.upper()}_{args.env.upper()}_DEFAULT_VERSION"] = version
+        os.environ[f"ACME_CONFIG_{args.app_name.upper()}_{args.env.upper()}_DEFAULT_VERSION"] = str(version)
 
 
 def main():
