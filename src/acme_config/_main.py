@@ -36,30 +36,31 @@ def load_params(params_path):
     return dotenv_values(params_path)
 
 
+def add_main_arguments(parser):
+    parser.add_argument("-app-name", required=True, type=str, help="Application name")
+    parser.add_argument("-env", required=True, type=str, help="Environment")
+    parser.add_argument("-ver-number", required=True, type=int, help="Version number")
+
+
 def parse_args():
     parser = argparse.ArgumentParser(
         prog="ac", description="System to store application configuration"
     )
     subparsers = parser.add_subparsers(dest="command")
 
-    def add_common_arguments(parser):
-        parser.add_argument("-app-name", required=True, type=str, help="Application name")
-        parser.add_argument("-env", required=True, type=str, help="Environment")
-        parser.add_argument("-ver-number", required=True, type=int, help="Version number")
-
     fetch_parser = subparsers.add_parser(
         "fetch",
         help="Fetch parameters",
         description="Fetch parameters from AWS AWS Parameter Store, print them to stdout, and save them to a file in CWD",
     )
-    add_common_arguments(fetch_parser)
+    add_main_arguments(fetch_parser)
 
     set_parser = subparsers.add_parser(
         "set",
         help="Set parameters",
         description="Set parameters in AWS Parameter Store from a .evn file under the provided path",
     )
-    add_common_arguments(set_parser)
+    add_main_arguments(set_parser)
     set_parser.add_argument(
         "--params-path", required=True, help="Path to .evn file to set as parameters"
     )

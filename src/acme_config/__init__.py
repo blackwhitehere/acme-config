@@ -1,5 +1,5 @@
 from ._main import (
-    main
+    main, fetch_parameters, add_main_arguments
 )
 
 import logging
