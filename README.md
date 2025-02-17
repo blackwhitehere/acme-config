@@ -16,6 +16,7 @@ To support a release system that can store references to various application art
 * Once parameters are written with such combination of identifiers `acme-config` prevents from overwriting them.
 * Allows to retreive parameters for a given combination of (`app-name`, `env` and `ver-number`) and stores it in a local file in `.env` file format convenient for editing.
 * Allows to set parameters from `.env` file specified at a file path.
+* Each (app-name, env) combination can set a default version number. This can be set with `set-version` command. Value of this version will be stored in an env var `ACME_CONFIG_{app-name.upper()}_{env.upper()}_DEFAULT_VERSION`. Value can be retrieved with `get-version` command.
 
 ## Example usage
 
@@ -25,6 +26,14 @@ Requires setup of a default AWS profile e.g. via `aws sso login`. Can be specifi
 
     ac set -app-name acme-config -env dev -ver-number 1 --params-path .env
 
+## To set default version
+
+    ac set-version -app-name acme-config -env dev -ver-number 1
+
+## To get default version
+
+    ac get-version -app-name acme-config -env dev
+    
 ### To fetch
 
     ac fetch -app-name acme-config -env dev -ver-number 1
