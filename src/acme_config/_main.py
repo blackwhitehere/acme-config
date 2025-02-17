@@ -1,9 +1,15 @@
+import os
 import argparse
 import logging
 
 from dotenv import dotenv_values
 
-from .aws_parameter_store import fetch_parameters, set_parameters
+from .aws_parameter_store import (
+    fetch_parameters,
+    set_parameters,
+    set_default_version,
+    get_default_version,
+)
 
 
 logger = logging.getLogger(__name__)
@@ -65,6 +71,20 @@ def parse_args():
         "--params-path", required=True, help="Path to .evn file to set as parameters"
     )
 
+    set_version_parser = subparsers.add_parser(
+        "set-version",
+        help="Set version",
+        description="Set default version number to use for (app-name, env) combination",
+    )
+    add_main_arguments(set_version_parser)
+
+    get_version_parser = subparsers.add_parser(
+        "get-version",
+        help="Get version",
+        description="Get default version number for (app-name, env) combination",
+    )
+    add_main_arguments(get_version_parser)
+
     return parser.parse_args()
 
 
@@ -76,6 +96,16 @@ def main_logic(args):
         params_dict = load_params(args.params_path)
         set_parameters(args.app_name, args.env, args.ver_number, params_dict)
         logger.info("Parameters set successfully")
+    elif args.command == "set-version":
+        set_default_version(args.app_name, args.env, args.ver_number)
+        logger.info("Default version set successfully")
+        os.environ[f"ACME_CONFIG_{args.app_name.upper()}_{args.env.upper()}_DEFAULT_VERSION"] = args.version
+    elif args.command == "get-version":
+        version = get_default_version(args.app_name, args.env)
+        logger.info(
+            f"Default version for `{args.app_name}` in `{args.env}` is `{version}`"
+        )
+        os.environ[f"ACME_CONFIG_{args.app_name.upper()}_{args.env.upper()}_DEFAULT_VERSION"] = version
 
 
 def main():
