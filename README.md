@@ -33,10 +33,12 @@ Requires setup of a default AWS profile e.g. via `aws sso login`. Can be specifi
 ## To get default version
 
     ac get-version -app-name acme-config -env dev
-    
+
 ### To fetch
 
     ac fetch -app-name acme-config -env dev -ver-number 1
+
+Will save parameters to a file `acme-config.dev.1.env`
 
 # Dev environment
 
