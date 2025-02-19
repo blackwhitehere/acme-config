@@ -16,7 +16,8 @@ To support a release system that can store references to various application art
 * Once parameters are written with such combination of identifiers `acme-config` prevents from overwriting them.
 * Allows to retreive parameters for a given combination of (`app-name`, `env` and `ver-number`) and stores it in a local file in `.env` file format convenient for editing.
 * Allows to set parameters from `.env` file specified at a file path.
-* Each (app-name, env) combination can set a default version number. This can be set with `set-version` command. Value of this version will be stored in an env var `ACME_CONFIG_{app-name.upper()}_{env.upper()}_DEFAULT_VERSION`. Value can be retrieved with `get-version` command.
+* Each (app-name, env) combination can set a default version number. This can be set with `set-version` command
+* Default version can be retrieved with `get-version` command. Value will be put to `stdout`.
 
 ## Example usage
 
