@@ -51,10 +51,7 @@ def load_saved_parameters(app_name: str, env: str, ver_number: int) -> dict:
         FileNotFoundError: If the .env file does not exist.
     """
     fp = f"{app_name}.{env}.{ver_number}.env"
-    if not os.path.exists(fp):
-        raise FileNotFoundError(f"Env file {fp} not found. Please run `ac fetch` first.")
-    with open(fp, "r") as f:
-        return dotenv_values(f)
+    return load_env_from_file(fp)
 
 
 def load_env_from_file(params_path: str) -> dict:
