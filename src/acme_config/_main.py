@@ -1,3 +1,4 @@
+import os
 import argparse
 import logging
 
@@ -38,7 +39,10 @@ def save_fetched_parameters(parameters, app_name, env, ver_number):
 
 
 def load_saved_parameters(app_name, env, ver_number):
-    with open(f"{app_name}.{env}.{ver_number}.env", "r") as f:
+    fp = f"{app_name}.{env}.{ver_number}.env"
+    if not os.path.exists(fp):
+        raise FileNotFoundError(f"Env file {fp} not found. Please run `ac fetch` first.")
+    with open(fp, "r") as f:
         return dotenv_values(f)
 
 
