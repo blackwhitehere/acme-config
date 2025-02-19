@@ -1,4 +1,3 @@
-import os
 import argparse
 import logging
 
@@ -36,6 +35,11 @@ def save_fetched_parameters(parameters, app_name, env, ver_number):
         for key, value in parameters.items():
             f.write(f"{key}={value}\n")
     logger.info(f"Parameters saved to {app_name}.{env}.{ver_number}.env")
+
+
+def load_saved_parameters(app_name, env, ver_number):
+    with open(f"{app_name}.{env}.{ver_number}.env", "r") as f:
+        return dotenv_values(f)
 
 
 def load_params(params_path):
