@@ -29,10 +29,12 @@ def save_fetched_parameters(parameters: dict, app_name: str, env: str, ver_numbe
     """
 
     logger.info(parameters)
-    with open(f"{app_name}.{env}.{ver_number}.env", "w") as f:
+    fp = f"{app_name}.{env}.{ver_number}.env"
+    with open(fp, "w") as f:
         for key, value in parameters.items():
             f.write(f"{key}={value}\n")
-    logger.info(f"Parameters saved to {app_name}.{env}.{ver_number}.env")
+    logger.info(f"Parameters saved to {fp}")
+    return fp
 
 
 def load_saved_parameters(app_name: str, env: str, ver_number: int) -> dict:
@@ -123,7 +125,8 @@ def parse_args() -> argparse.Namespace:
 def main_logic(args: argparse.Namespace) -> None:
     if args.command == "fetch":
         parameters = fetch_parameters(args.app_name, args.env, args.ver_number)
-        save_fetched_parameters(parameters, args.app_name, args.env, args.ver_number)
+        fp = save_fetched_parameters(parameters, args.app_name, args.env, args.ver_number)
+        print(fp)
     elif args.command == "set":
         params_dict = load_env_from_file(args.params_path)
         set_parameters(args.app_name, args.env, args.ver_number, params_dict)
