@@ -15,18 +15,15 @@ from .aws_parameter_store import (
 logger = logging.getLogger(__name__)
 
 
-def save_fetched_parameters(parameters, app_name, env, ver_number):
+def save_fetched_parameters(parameters: dict, app_name: str, env: str, ver_number: int) -> None:
     """
     Save fetched parameters to a file.
-    This function takes a dictionary of parameters and saves them to a file
-    named using the provided application name, environment, and version number.
-    Each parameter is written in the format `key=value`.
 
     Parameters:
         parameters (dict): A dictionary containing the parameters to be saved.
         app_name (str): The name of the application.
         env (str): The environment (e.g., 'dev', 'prod').
-        ver_number (str): The version number of the application.
+        ver_number (int): The version number of the application.
     Returns:
         None
     """
@@ -38,7 +35,19 @@ def save_fetched_parameters(parameters, app_name, env, ver_number):
     logger.info(f"Parameters saved to {app_name}.{env}.{ver_number}.env")
 
 
-def load_saved_parameters(app_name, env, ver_number):
+def load_saved_parameters(app_name: str, env: str, ver_number: int) -> dict:
+    """
+    Load parameters from a saved .env file.
+
+    Parameters:
+        app_name (str): The name of the application.
+        env (str): The environment (e.g., 'dev', 'prod').
+        ver_number (int): The version number of the application.
+    Returns:
+        dict: A dictionary containing the loaded parameters.
+    Raises:
+        FileNotFoundError: If the .env file does not exist.
+    """
     fp = f"{app_name}.{env}.{ver_number}.env"
     if not os.path.exists(fp):
         raise FileNotFoundError(f"Env file {fp} not found. Please run `ac fetch` first.")
@@ -46,17 +55,29 @@ def load_saved_parameters(app_name, env, ver_number):
         return dotenv_values(f)
 
 
-def load_params(params_path):
+def load_env_from_file(params_path: str) -> dict:
+    """
+    Load parameters from a .env file at the specified path.
+
+    Parameters:
+        params_path (str): Path to the .env file to load parameters from.
+    Returns:
+        dict: A dictionary containing the loaded parameters.
+    Raises:
+        FileNotFoundError: If the .env file does not exist at the specified path.
+    """
+    if not os.path.exists(params_path):
+        raise FileNotFoundError(f"Env file {params_path} not found")
     return dotenv_values(params_path)
 
 
-def add_main_arguments(parser):
+def add_main_arguments(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("-app-name", required=True, type=str, help="Application name")
     parser.add_argument("-env", required=True, type=str, help="Environment")
     parser.add_argument("-ver-number", required=True, type=int, help="Version number")
 
 
-def parse_args():
+def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         prog="ac", description="System to store application configuration"
     )
@@ -99,12 +120,12 @@ def parse_args():
     return parser.parse_args()
 
 
-def main_logic(args):
+def main_logic(args: argparse.Namespace) -> None:
     if args.command == "fetch":
         parameters = fetch_parameters(args.app_name, args.env, args.ver_number)
         save_fetched_parameters(parameters, args.app_name, args.env, args.ver_number)
     elif args.command == "set":
-        params_dict = load_params(args.params_path)
+        params_dict = load_env_from_file(args.params_path)
         set_parameters(args.app_name, args.env, args.ver_number, params_dict)
         logger.info("Parameters set successfully")
     elif args.command == "set-version":
@@ -118,7 +139,7 @@ def main_logic(args):
         print(version)
 
 
-def main():
+def main() -> None:
     if not logging.getLogger().hasHandlers():
         logging.basicConfig(level=logging.INFO)
     args = parse_args()
