@@ -120,7 +120,7 @@ def parse_args() -> argparse.Namespace:
 
 
 def main_logic(args: argparse.Namespace) -> None:
-    if args.command == "fetch":
+    if args.command == "fetch" or args.command == "get":
         parameters = fetch_parameters(args.app_name, args.env, args.ver_number)
         fp = save_fetched_parameters(parameters, args.app_name, args.env, args.ver_number)
         print(fp)
