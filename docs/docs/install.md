@@ -1,3 +1,3 @@
 # Installation
 
-    pip install acme_config
+    pip install acme-config

@@ -2,44 +2,45 @@
 
 ## Description
 
-System to store application configuration
+App configuration framework: schema declaration, env/CLI resolution, feature flags.
 
 ## Motivation
 
-To support a release system that can store references to various application artifacts we need a config system that can store environment variables needed by a specific application (i.e. what is put into `.env` file). Specifically, we want to make the configurations immutable so once they are refered to from a release system they won't change.
-
+Applications need a consistent way to declare config, load values from `.env` and
+environment variables, and override settings from CLI arguments. acme-config provides
+that with a typed schema, a resolver with clear precedence, and inspection helpers.
 
 ## Features
 
-* Uses AWS Parameter Store as a storage layer for parameters
-* Enforces each parameter needs to be assigned to an application identifier (`app-name`), an environment identifier (`env`) and a integer version (`ver-number`)
-* Once parameters are written with such combination of identifiers `acme-config` prevents from overwriting them.
-* Allows to retreive parameters for a given combination of (`app-name`, `env` and `ver-number`) and stores it in a local file in `.env` file format convenient for editing.
-* Allows to set parameters from `.env` file specified at a file path.
-* Each (app-name, env) combination can set a default version number. This can be set with `set-version` command
-* Default version can be retrieved with `get-version` command. Value will be put to `stdout`.
+* Declare config schemas with `AppConfig` and `ConfigField`.
+* Resolve settings from defaults, `.env`, environment variables, CLI args, and overrides.
+* Generate argparse parsers from config schema metadata.
+* Inspect configuration: manifest generation, dotenv templates, validation, redaction.
+* Feature flags via `FeatureFlags` and `FeatureFlag`.
 
 ## Example usage
 
-Requires setup of a default AWS profile e.g. via `aws sso login`. Can be specified via `AWS_PROFILE` env var.
+```python
+from acme_config import AppConfig, ConfigField, build_cli_parser, resolve_config
 
-## To set
 
-    ac set -app-name acme-config -env dev -ver-number 1 --params-path .env
+class MyConfig(AppConfig):
+    model_config = {"env_prefix": "MYAPP_"}
 
-## To set default version
+    bucket: str = ConfigField(description="S3 bucket", cli_flag="--bucket")
+    debug: bool = ConfigField(default=False, description="Debug mode", cli_flag="--debug")
 
-    ac set-version -app-name acme-config -env dev -ver-number 1
 
-## To get default version
+parser = build_cli_parser(MyConfig)
+cli_args = vars(parser.parse_args())
+config = resolve_config(MyConfig, cli_args=cli_args)
+```
 
-    ac get-version -app-name acme-config -env dev
+## Legacy AWS Parameter Store CLI
 
-### To fetch
-
-    ac fetch -app-name acme-config -env dev -ver-number 1
-
-Will save parameters to a file `acme-config.dev.1.env`
+The AWS Parameter Store CLI (`ac` command) from acme-config v0.0.x lives in
+`src/acme_config/legacy`. It is not part of the v0.1.0 API and is slated to
+move into acme-env or acme-runtime.
 
 # Dev environment
 
