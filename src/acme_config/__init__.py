@@ -1,18 +1,29 @@
-from ._main import (
-    main,
-    fetch_parameters,
-    add_main_arguments,
-    set_default_version,
-    get_default_version,
-    load_saved_parameters,
+"""App configuration framework: schema declaration, env/CLI resolution, feature flags."""
+
+from acme_config.features import FeatureFlag, FeatureFlags, list_flags
+from acme_config.inspect import (
+    describe_config,
+    generate_dotenv_template,
+    generate_manifest,
+    validate_env,
 )
+from acme_config.resolver import build_cli_parser, resolve_config
+from acme_config.schema import AppConfig, ConfigField
 
-import logging
-from dotenv import load_dotenv
-
-load_dotenv()
-
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s | %(pathname)s | %(name)s | func: %(funcName)s:%(lineno)s | %(levelname)s | %(message)s",
-)
+__all__ = [
+    # Schema
+    "AppConfig",
+    "ConfigField",
+    # Feature flags
+    "FeatureFlags",
+    "FeatureFlag",
+    "list_flags",
+    # Resolver
+    "resolve_config",
+    "build_cli_parser",
+    # Inspection
+    "validate_env",
+    "describe_config",
+    "generate_manifest",
+    "generate_dotenv_template",
+]
