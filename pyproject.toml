@@ -4,39 +4,49 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "acme_config"
-version = "0.0.14"
-description = "System to store application configuration"
+version = "0.1.0"
+description = "App configuration framework: schema declaration, env/CLI resolution, feature flags"
 readme = "README.md"
-classifiers = [ "Programming Language :: Python :: 3.12",
-                "Programming Language :: Python :: 3.11",
-                "Programming Language :: Python :: 3.10",
-                "Programming Language :: Python :: 3.9" ]
-requires-python = ">=3.9"
-dependencies = [ "python-dotenv", "boto3" ]
+classifiers = ["Programming Language :: Python :: 3.12"]
+requires-python = ">=3.12"
+dependencies = ["python-dotenv", "pydantic>=2.0", "pydantic-settings>=2.0"]
 
 [[project.authors]]
 email = "guner.stan@gmail.com"
 
-[project.scripts]
-ac = "acme_config._main:main"
-
 [project.urls]
-homepage = "https://example.com"
-repository = "https://example.com"
+homepage = "https://github.com/blackwhitehere/acme-config"
+repository = "https://github.com/blackwhitehere/acme-config"
 
 [project.optional-dependencies]
 dev = [
-    "pytest", # for testing
-    "uv", # for venv
-    "mkdocs", # for documentation
-    "mkdocs-material", # theme for mkdocs
-    "mkdocstrings[python]", # mkdocs plugin to generate API docs from sources
-    "jupyterlab", # for jupyter notebooks
+    "pytest",
+    "uv",
+    "mkdocs",
+    "mkdocs-material",
+    "mkdocstrings[python]",
+    "ruff",
+    "pre-commit",
 ]
 
 [tool.setuptools]
 package-dir = {"" = "src"}
 packages = ["acme_config"]
-# https://github.com/astral-sh/uv/issues/9513#issuecomment-2519527822
 license-files = []
-# [tool.setuptools.package-data]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+exclude = ["src/acme_config/legacy"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W", "UP"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3.4",
+    "ruff>=0.15.0",
+]
